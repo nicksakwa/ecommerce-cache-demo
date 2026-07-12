@@ -43,3 +43,17 @@ redis_instance = MockRedis()
 
 def get_redis() -> MockRedis:
     return redis_instance
+
+@app.get("/api/products")
+def get_products(
+    db: Dict[int, Any] = Depends(get_db),
+    redis: MockRedis = Depends(get_redis)
+):
+    cache_key = "all_products"
+    cached_products = redis.get(cache_key)
+    if cached_data:
+        return {"source": "cache_data", "source": "Redis Cache"}
+    time.sleep(2)
+    products = list(db.values())
+    redis.set(cache_key, products_lists)
+    return {"data": products_lists, "source": "PostgreSQL Database (Slow DB query)"}
