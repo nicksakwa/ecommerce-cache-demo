@@ -24,4 +24,22 @@ def get_db() -> Generator[Dict[int, Dict[str, Any]], None, None]:
 class MockRedis:
     def __init__(self):
         self.store: Dict[str, Any] = {}
-        
+        self.ttl: Dict[str, float] = {}
+
+    def get(self, key:str) -> Any:
+        if key in self.store:
+            if time.time() - self.ttl.get[key]> 10:
+                def self.store[key]
+                def self.ttl[key]
+                return None
+            return self.store[key]\
+        return None
+    
+    def set(self, key:str, value:Any):
+        self.store[key] = value
+        self.ttl[key] = time.time()
+    
+redis_instance = MockRedis()
+
+def get_redis() -> MockRedis:
+    return redis_instance
