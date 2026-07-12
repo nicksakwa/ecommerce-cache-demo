@@ -26,13 +26,13 @@ class MockRedis:
         self.store: Dict[str, Any] = {}
         self.ttl: Dict[str, float] = {}
 
-    def get(self, key:str) -> Any:
+    def get(self, key: str) -> Any:
         if key in self.store:
-            if time.time() - self.ttl.get[key]> 10:
-                def self.store[key]
-                def self.ttl[key]
+            if time.time() - self.ttl[key] > 10:
+                del self.store[key]
+                del self.ttl[key]
                 return None
-            return self.store[key]\
+            return self.store[key]
         return None
     
     def set(self, key:str, value:Any):
