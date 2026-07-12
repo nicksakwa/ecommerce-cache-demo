@@ -1,9 +1,9 @@
 import time
 from typing import Generator, Dict, Any
-from fastapi import FASTAPI, Depends
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FASTAPI()
+app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
