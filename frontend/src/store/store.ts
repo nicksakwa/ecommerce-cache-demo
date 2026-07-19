@@ -11,4 +11,21 @@ export const fetchProductsViaRedux = createAsyncThunk(
         const json = await response.json();
         return { data: json.data, source: json.source };
     }
-)
+);
+
+const productsSlice = createSlice({
+    name: 'products',
+    initialState: { items: [], source: '', loading: false },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchProductsViaRedux.pending, (state)=>{ state.loading = true;})
+            .addCase(fetchProductsViaRedux.fulfilled, (state, action) => {
+                state.loading = false;
+                state.items = action.payload.data;
+                state.source = action.payload.source;
+        });
+    },
+});
+
+export const store = configureStore({ reducer: { products: productsSlice.reducer }});
