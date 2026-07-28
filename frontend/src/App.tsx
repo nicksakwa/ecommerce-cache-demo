@@ -8,4 +8,6 @@ const HeavyHero = lazy(()=> import('./components/HeavyHero'));
 const localInMemoryCache: Record<string, any> ={};
 export default function App(){
     const dispatch = useDispatch(<any>();
+    const reduxProducts = useSelector((state: any) => state.products.items);
+    const reduxSource = useSelector((state: any) => state.products.source);
 }
