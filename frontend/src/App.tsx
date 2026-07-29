@@ -10,4 +10,15 @@ export default function App(){
     const dispatch = useDispatch(<any>();
     const reduxProducts = useSelector((state: any) => state.products.items);
     const reduxSource = useSelector((state: any) => state.products.source);
-}
+    const [sourceInfo, setSourceInfo] = useState('');
+    const [products,setProducts] = useState<any[]>([]);
+
+    const clickCountRef = useRef(0);
+    const testCacheAPI = async ()=>{
+        if('caches' in window){
+            const cache = await caches.open('vl-api-cache');
+            await cache.add(new Request('http://localhost:8000/api/products'));
+            setSourceInfo('Data safely stored in Browser Cache API');
+        }
+    };
+    
