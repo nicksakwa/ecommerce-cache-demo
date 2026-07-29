@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductsViaRedux } from '.store/store';
+import { fetchProductsViaRedux } from './store/store';
 import { ProductList } from './components/ProductList';
 import { openIndexedDB } from './utils/db';
 
 const HeavyHero = lazy(()=> import('./components/HeavyHero'));
 const localInMemoryCache: Record<string, any> ={};
 export default function App(){
-    const dispatch = useDispatch(<any>());
+    const dispatch = useDispatch<any>();
     const reduxProducts = useSelector((state: any) => state.products.items);
     const reduxSource = useSelector((state: any) => state.products.source);
     const [sourceInfo, setSourceInfo] = useState('');
@@ -22,7 +22,7 @@ export default function App(){
         }
     };
 
-    const loadFromStorage = async (type: 'local'| 'session' | 'idb'|'memory' | 'redux')=> { setProducts([]);
+    const loadFromStorage = async (type: 'local' | 'session' | 'idb' | 'memory' | 'redux' | 'network') => { setProducts([]);
         if (type === 'memory' && localInMemoryCache['products']){
             setProducts(localInMemoryCache['products']);
             setSourceInfo('Loaded data from pure JS In-memory cache');
@@ -38,7 +38,7 @@ export default function App(){
         if (type === 'session'){
             const data = sessionStorage.getItem('products');
             if (data) { setProducts(JSON.parse(data)); 
-            setSourceInfo('Loaded data from Session storage'):
+            setSourceInfo('Loaded data from Session storage');
             return;
             }
         }
@@ -47,11 +47,12 @@ export default function App(){
             const tx = db.transaction('products', 'readonly');
             const store = tx.objectStore('products');
             const request =store.getAll();
-            request.onsuccess = ()=> {
+            request.onsuccess = () => {
                 if (request.result.length){
                     setProducts(request.result);
                     setSourceInfo('Loaded data from IndexedDB');
                 }
+            };
             return;
         }
         if (type === 'redux'){
@@ -61,19 +62,19 @@ export default function App(){
 
         const response = await fetch('http://localhost:8000/api/products');
         const json = await response.json();
-        const data = json.products;
+        const data = json.data;
 
         localStorage.setItem('products', JSON.stringify(data));
         sessionStorage.setItem('products', JSON.stringify(data));
-        localInMemoryCache['products']= data;
+        localInMemoryCache['products'] = data;
         const db = await openIndexedDB();
         const tx = db.transaction('products', 'readwrite');
-        data.forEach((product: any) =>tx.objectStore('products').put(product));
+        data.forEach((product: any) => tx.objectStore('products').put(product));
         setProducts(data);
         setSourceInfo(json.source);
-        };
+    };
     
-    useeffect(()=>{
+    useEffect(() => {
         if (reduxProducts.length > 0){
             setProducts(reduxProducts);
             setSourceInfo(reduxSource);
@@ -102,7 +103,7 @@ export default function App(){
                 <button onClick={() => loadFromStorage('redux')}>Test Redux Store</button>
                 <button onClick={testCacheAPI}> Trigger Cache API Spec</button>
             </div>
-            {products.length > 0 ? && <ProductList products={products} />}
+            {products.length > 0 && <ProductList products={products} />}
             </div>
         );
 }
