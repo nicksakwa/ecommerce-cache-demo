@@ -7,7 +7,7 @@ import { openIndexedDB } from './utils/db';
 const HeavyHero = lazy(()=> import('./components/HeavyHero'));
 const localInMemoryCache: Record<string, any> ={};
 export default function App(){
-    const dispatch = useDispatch(<any>();
+    const dispatch = useDispatch(<any>());
     const reduxProducts = useSelector((state: any) => state.products.items);
     const reduxSource = useSelector((state: any) => state.products.source);
     const [sourceInfo, setSourceInfo] = useState('');
@@ -23,8 +23,8 @@ export default function App(){
     };
 
     const loadFromStorage = async (type: 'local'| 'session' | 'idb'|'memory' | 'redux')=> { setProducts([]);
-        if (type === 'memory' && LocalInMemoryCache['products']){
-            setProducts(LocalInMemoryCache['products']);
+        if (type === 'memory' && localInMemoryCache['products']){
+            setProducts(localInMemoryCache['products']);
             setSourceInfo('Loaded data from pure JS In-memory cache');
             return;
         }
@@ -79,3 +79,30 @@ export default function App(){
             setSourceInfo(reduxSource);
         }
     }, [reduxProducts, reduxSource]);
+
+    return (
+        <div style={{ fontFamily: 'sans-serif', padding: '24px'}}>
+            <h1>Multi layer Cache Landing page</h1>
+            <Suspense fallback={<div>Loading Banner Section Component via code splitting...</div>}>
+                <HeavyHero />
+            </Suspense>
+            <div style={{ background: '#e0f2fe', padding: '16px', borderRadius: '6px', marginBottom: '16px' }}>
+            <h3>Data Fetching Metrics</h3>
+            <p><strong>Current Active Data Source Layer:</strong> <span style={{color: 'red'}}>{sourceInfo || 'None'}</span></p>
+            <button onClick={() => { clickCountRef.current++; console.log(`Unrendered clicks logged: ${clickCountRef.current}`); }}>
+                Inc Ref Counter (Check Console - Zero Re-renders)
+            </button>
+            </div>
+            <div style={{ marginBottom: '24px', display: 'flex', gap: '8px', flexWrap: 'wrap'}}>
+                <button onClick={() => loadFromStorage('network')}>Fetch Fresh / seed Layers</button>
+                <button onClick={() => loadFromStorage('memory')}>Test JS from memory cache</button>
+                <button onClick={() => loadFromStorage('session')}>Test Session Storage</button>
+                <button onClick={() => loadFromStorage('local')}>Test Local Storage</button>
+                <button onClick={() => loadFromStorage('idb')}>Test IndexedDB</button>
+                <button onClick={() => loadFromStorage('redux')}>Test Redux Store</button>
+                <button onClick={testCacheAPI}> Trigger Cache API Spec</button>
+            </div>
+            {products.length > 0 ? && <ProductList products={products} />}
+            </div>
+        );
+}
