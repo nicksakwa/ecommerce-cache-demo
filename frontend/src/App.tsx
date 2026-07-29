@@ -69,10 +69,6 @@ export default function App(){
             };
             return;
         }
-        if (type === 'redux'){
-            dispatch(fetchProductsViaRedux());
-            return;
-        }
 
         const response = await fetch('http://localhost:8000/api/products');
         const json = await response.json();
