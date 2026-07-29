@@ -6,10 +6,10 @@ interface ProductListProps {
 }
 
 export const ProductList: React.FC<ProductListProps> = ({ products }) => {
-    const [cart, setCart] = useState(0);
+    const [cartCount, setCartCount] = useState(0);
 
     const handleAddToCart = useCallback((productId: number)=>{
-        console.log('Product ${id} added to cart');
+        console.log(`Product ${productId} added to cart`);
         setCartCount(prev => prev + 1);
     }, []);
 
