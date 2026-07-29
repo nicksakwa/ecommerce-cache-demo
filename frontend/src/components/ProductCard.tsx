@@ -9,7 +9,7 @@ const productImageMap: Record<string, string> = {
     'Wireless Headphones': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop&auto=format',
     'Running Shoes':       'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop&auto=format',
     'Smart Watch':         'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300&h=300&fit=crop&auto=format',
-    'Leather Wallet':      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop&auto=format',
+    'Leather Bag':         'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop&auto=format',
 };
 
 export const ProductCard: React.FC<ProductCardProps> = React.memo(({ product, onAddToCart }) => {
