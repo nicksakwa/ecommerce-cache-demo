@@ -46,10 +46,10 @@ export default function App(){
             const db = await openIndexedDB();
             const tx = db.transaction('products', 'readonly');
             const store = tx.objectStore('products');
-            const req =store.getAll();
-            req.onsuccess = ()=> {
-                if (req.result.length){
-                    setProducts(req.result);
+            const request =store.getAll();
+            request.onsuccess = ()=> {
+                if (request.result.length){
+                    setProducts(request.result);
                     setSourceInfo('Loaded data from IndexedDB');
                 }
             return;
@@ -58,3 +58,7 @@ export default function App(){
             dispatch(fetchProductsViaRedux());
             return;
         }
+
+        const response = await fetch('http://localhost:8000/api/products');
+        const json = await response.json();
+        const data = json.products;
