@@ -73,4 +73,9 @@ export default function App(){
         setSourceInfo(json.source);
         };
     
-    
+    useeffect(()=>{
+        if (reduxProducts.length > 0){
+            setProducts(reduxProducts);
+            setSourceInfo(reduxSource);
+        }
+    }, [reduxProducts, reduxSource]);
