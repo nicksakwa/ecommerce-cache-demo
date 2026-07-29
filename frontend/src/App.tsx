@@ -62,3 +62,15 @@ export default function App(){
         const response = await fetch('http://localhost:8000/api/products');
         const json = await response.json();
         const data = json.products;
+
+        localStorage.setItem('products', JSON.stringify(data));
+        sessionStorage.setItem('products', JSON.stringify(data));
+        localInMemoryCache['products']= data;
+        const db = await openIndexedDB();
+        const tx = db.transaction('products', 'readwrite');
+        data.forEach((product: any) =>tx.objectStore('products').put(product));
+        setProducts(data);
+        setSourceInfo(json.source);
+        };
+    
+    
