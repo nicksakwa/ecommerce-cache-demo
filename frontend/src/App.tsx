@@ -22,7 +22,21 @@ export default function App(){
         }
     };
 
-    const loadFromStorage = async (type: 'local' | 'session' | 'idb' | 'memory' | 'redux' | 'network') => { setProducts([]);
+    const loadFromStorage = async (type: 'local' | 'session' | 'idb' | 'memory' | 'redux' | 'network') => {
+        // Handle redux before clearing — if store already has data the useEffect
+        // won't re-fire on the same reference, leaving products blank
+        if (type === 'redux') {
+            if (reduxProducts.length > 0) {
+                setProducts(reduxProducts);
+                setSourceInfo('Redux In-Memory Cache');
+            } else {
+                setProducts([]);
+                dispatch(fetchProductsViaRedux());
+            }
+            return;
+        }
+
+        setProducts([]);
         if (type === 'memory' && localInMemoryCache['products']){
             setProducts(localInMemoryCache['products']);
             setSourceInfo('Loaded data from pure JS In-memory cache');
