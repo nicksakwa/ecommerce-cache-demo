@@ -50,10 +50,10 @@ def get_products(
     redis: MockRedis = Depends(get_redis)
 ):
     cache_key = "all_products"
-    cached_products = redis.get(cache_key)
+    cached_data = redis.get(cache_key)
     if cached_data:
-        return {"source": "cache_data", "source": "Redis Cache"}
-    time.sleep(2)
+        return {"data": cached_data, "source": "Redis Cache"}
+    time.sleep(1.5)
     products = list(db.values())
-    redis.set(cache_key, products_lists)
-    return {"data": products_lists, "source": "PostgreSQL Database (Slow DB query)"}
+    redis.set(cache_key, products)
+    return {"data": products, "source": "PostgreSQL Database (Slow DB Query)"}
