@@ -82,26 +82,52 @@ export default function App(){
     }, [reduxProducts, reduxSource]);
 
     return (
-        <div style={{ fontFamily: 'sans-serif', padding: '24px'}}>
-            <h1>Multi layer Cache Landing page</h1>
+        <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif", padding: '32px 48px', maxWidth: '1200px', margin: '0 auto', background: '#f9fafb', minHeight: '100vh' }}>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#111827', marginBottom: '24px', letterSpacing: '-0.5px' }}>Multi-Layer Cache Demo</h1>
             <Suspense fallback={<div>Loading Banner Section Component via code splitting...</div>}>
                 <HeavyHero />
             </Suspense>
-            <div style={{ background: '#e0f2fe', padding: '16px', borderRadius: '6px', marginBottom: '16px' }}>
-            <h3>Data Fetching Metrics</h3>
-            <p><strong>Current Active Data Source Layer:</strong> <span style={{color: 'red'}}>{sourceInfo || 'None'}</span></p>
-            <button onClick={() => { clickCountRef.current++; console.log(`Unrendered clicks logged: ${clickCountRef.current}`); }}>
-                Inc Ref Counter (Check Console - Zero Re-renders)
-            </button>
+            <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', padding: '20px 24px', borderRadius: '12px', marginBottom: '24px' }}>
+                <h3 style={{ margin: '0 0 10px', color: '#1e40af', fontSize: '1rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Data Fetching Metrics</h3>
+                <p style={{ margin: '0 0 12px', color: '#374151' }}>
+                    <strong>Active Source:</strong>{' '}
+                    <span style={{ color: '#dc2626', fontWeight: 600 }}>{sourceInfo || 'None — click a button below'}</span>
+                </p>
+                <button
+                    onClick={() => { clickCountRef.current++; console.log(`Unrendered clicks: ${clickCountRef.current}`); }}
+                    style={{ padding: '7px 14px', background: '#fff', border: '1px solid #93c5fd', borderRadius: '6px', color: '#1d4ed8', fontWeight: 500, cursor: 'pointer', fontSize: '0.85rem' }}
+                >
+                    Inc Ref Counter (Check Console — Zero Re-renders)
+                </button>
             </div>
-            <div style={{ marginBottom: '24px', display: 'flex', gap: '8px', flexWrap: 'wrap'}}>
-                <button onClick={() => loadFromStorage('network')}>Fetch Fresh / seed Layers</button>
-                <button onClick={() => loadFromStorage('memory')}>Test JS from memory cache</button>
-                <button onClick={() => loadFromStorage('session')}>Test Session Storage</button>
-                <button onClick={() => loadFromStorage('local')}>Test Local Storage</button>
-                <button onClick={() => loadFromStorage('idb')}>Test IndexedDB</button>
-                <button onClick={() => loadFromStorage('redux')}>Test Redux Store</button>
-                <button onClick={testCacheAPI}> Trigger Cache API Spec</button>
+            <div style={{ marginBottom: '28px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                {([
+                    { label: '🔄 Fetch Fresh / Seed Layers', type: 'network', primary: true },
+                    { label: '🧠 JS Memory Cache', type: 'memory' },
+                    { label: '📦 Redux Store', type: 'redux' },
+                    { label: '💾 LocalStorage', type: 'local' },
+                    { label: '🗂 SessionStorage', type: 'session' },
+                    { label: '🗄 IndexedDB', type: 'idb' },
+                ] as const).map(({ label, type, primary }) => (
+                    <button
+                        key={type}
+                        onClick={() => loadFromStorage(type)}
+                        style={{
+                            padding: '9px 16px',
+                            background: primary ? '#2563eb' : '#fff',
+                            color: primary ? '#fff' : '#374151',
+                            border: `1px solid ${primary ? '#2563eb' : '#d1d5db'}`,
+                            borderRadius: '8px',
+                            fontWeight: 600,
+                            fontSize: '0.85rem',
+                            cursor: 'pointer',
+                        }}
+                    >{label}</button>
+                ))}
+                <button
+                    onClick={testCacheAPI}
+                    style={{ padding: '9px 16px', background: '#fff', color: '#374151', border: '1px solid #d1d5db', borderRadius: '8px', fontWeight: 600, fontSize: '0.85rem', cursor: 'pointer' }}
+                >🌐 Browser Cache API</button>
             </div>
             {products.length > 0 && <ProductList products={products} />}
             </div>

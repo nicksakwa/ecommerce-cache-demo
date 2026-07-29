@@ -20,8 +20,23 @@ export const ProductList: React.FC<ProductListProps> = ({ products }) => {
 
     return (
         <div>
-            <h3>Cart Items Counter: {cartCount} (Increments trigger parent re-render)</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap'}}>
+            <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px',
+                background: '#f0fdf4',
+                border: '1px solid #bbf7d0',
+                borderRadius: '8px',
+                padding: '10px 18px',
+                marginBottom: '20px',
+            }}>
+                <span style={{ fontSize: '1.2rem' }}>🛒</span>
+                <span style={{ fontWeight: 600, color: '#166534' }}>
+                    Cart: <strong>{cartCount}</strong> item{cartCount !== 1 ? 's' : ''}
+                </span>
+                <span style={{ fontSize: '0.78rem', color: '#6b7280' }}>(re-renders on each add)</span>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
                 {filteredProducts.map(product => (
                     <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
                 ))}
