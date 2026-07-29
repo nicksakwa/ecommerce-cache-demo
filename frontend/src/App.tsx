@@ -21,4 +21,40 @@ export default function App(){
             setSourceInfo('Data safely stored in Browser Cache API');
         }
     };
-    
+
+    const loadFromStorage = async (type: 'local'| 'session' | 'idb'|'memory' | 'redux')=> { setProducts([]);
+        if (type === 'memory' && LocalInMemoryCache['products']){
+            setProducts(LocalInMemoryCache['products']);
+            setSourceInfo('Loaded data from pure JS In-memory cache');
+            return;
+        }
+        if (type === 'local'){
+            const data = localStorage.getItem('products');
+            if (data) { setProducts(JSON.parse(data)); 
+            setSourceInfo('Loaded data from Local Storage');
+            return;
+            }
+        }
+        if (type === 'session'){
+            const data = sessionStorage.getItem('products');
+            if (data) { setProducts(JSON.parse(data)); 
+            setSourceInfo('Loaded data from Session storage'):
+            return;
+            }
+        }
+        if (type === 'idb'){
+            const db = await openIndexedDB();
+            const tx = db.transaction('products', 'readonly');
+            const store = tx.objectStore('products');
+            const req =store.getAll();
+            req.onsuccess = ()=> {
+                if (req.result.length){
+                    setProducts(req.result);
+                    setSourceInfo('Loaded data from IndexedDB');
+                }
+            return;
+        }
+        if (type === 'redux'){
+            dispatch(fetchProductsViaRedux());
+            return;
+        }
