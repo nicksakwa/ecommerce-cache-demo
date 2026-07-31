@@ -6,7 +6,7 @@
 
 ### Backend
 
-| Library | Version | Role |
+| Framework/Server | Version | Role |
 |---|---|---|
 | **FastAPI** | ≥0.110 | ASGI web framework; handles routing, dependency injection, and request validation |
 | **Uvicorn** | ≥0.28 | ASGI server that runs the FastAPI app |
@@ -15,7 +15,7 @@ No database driver or Redis client is installed — both are simulated in pure P
 
 ### Frontend
 
-| Library | Version | Role |
+| Technology | Version | Role |
 |---|---|---|
 | **React** | 19 | UI component tree and rendering |
 | **TypeScript** | 6 | Static typing across all frontend modules |
