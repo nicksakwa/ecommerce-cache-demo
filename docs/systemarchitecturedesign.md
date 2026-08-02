@@ -19,7 +19,7 @@ No database driver or Redis client is installed — both are simulated in pure P
 |---|---|---|
 | **React** | 19 | UI component tree and rendering |
 | **TypeScript** | 6 | Static typing across all frontend modules |
-| **Vite** | 8 | Dev server and bundler; handles code splitting and HMR |
+| **Vite** | 8 | Dev server and bundler; handles code splitting |
 | **Redux Toolkit** | ≥2.2 | State management and client-side cache layer |
 | **react-redux** | ≥9.1 | React bindings for the Redux store (`useSelector`, `useDispatch`) |
 
